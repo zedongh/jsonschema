@@ -23,7 +23,7 @@ func usage() {
 
 func main() {
 	draft := flag.Int("draft", 2020, "draft used when '$schema' attribute is missing. valid values 4, 5, 7, 2019, 2020")
-	output := flag.String("output", "", "output format. valid values flag, basic, detailed")
+	output := flag.String("output", "", "output format. valid values flag, basic, detailed, truncated")
 	assertFormat := flag.Bool("assertformat", false, "enable format assertions with draft >= 2019")
 	assertContent := flag.Bool("assertcontent", false, "enable content assertions with draft >= 2019")
 	flag.Usage = usage
@@ -55,7 +55,7 @@ func main() {
 	compiler.AssertContent = *assertContent
 
 	var validOutput bool
-	for _, out := range []string{"", "flag", "basic", "detailed"} {
+	for _, out := range []string{"", "flag", "basic", "detailed", "truncated"} {
 		if *output == out {
 			validOutput = true
 			break
@@ -97,6 +97,8 @@ func main() {
 				switch *output {
 				case "flag":
 					out = ve.FlagOutput()
+				case "truncated":
+					out = ve.TruncatedOutput()
 				case "basic":
 					out = ve.BasicOutput()
 				case "detailed":
